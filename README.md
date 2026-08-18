@@ -8,7 +8,7 @@ Users sign in with Google. Every login is recorded server-side (email + timestam
 
 ## Live Demo
 
-- **App:** [add your deployed Vercel/Netlify URL here]
+- **App:** https://login-tracker-seven.vercel.app/
 - **Demo video:** [add your video link here]
 
 ---
