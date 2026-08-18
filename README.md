@@ -18,7 +18,7 @@ Users sign in with Google. Every login is recorded server-side (email + timestam
 | Layer         | Tech |
 |---------------|------|
 | Frontend      | React (Vite) |
-| Hosting       | Vercel / Netlify |
+| Hosting       | Vercel  |
 | Auth          | Supabase Auth — Google OAuth provider |
 | Database      | Supabase Postgres with Row Level Security |
 | Backend logic | Postgres RPC functions (`security definer`) + Supabase Edge Function (Deno) |
