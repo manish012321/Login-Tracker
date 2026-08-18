@@ -57,49 +57,7 @@ supabase/
   config.toml
 ```
 
----
 
-## Database Schema & Security
-
-```sql
--- table
-create table login_logs (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references auth.users(id) on delete cascade not null,
-  email text not null,
-  login_at timestamptz not null default now()
-);
-
--- lock it down
-alter table login_logs enable row level security;
-
-create policy "authenticated can read all logs"
-  on login_logs for select to authenticated using (true);
-
-create policy "no direct insert"
-  on login_logs for insert to authenticated with check (false);
-
--- the only allowed way to write a row
-create or replace function record_login()
-returns void language plpgsql security definer set search_path = public as $$
-begin
-  insert into login_logs (user_id, email)
-  values (auth.uid(), auth.jwt() ->> 'email');
-end;
-$$;
-grant execute on function record_login() to authenticated;
-
--- used by the Edge Function
-create or replace function login_counts()
-returns table(email text, total_logins bigint, last_login timestamptz)
-language sql security definer set search_path = public as $$
-  select email, count(*) as total_logins, max(login_at) as last_login
-  from login_logs group by email order by last_login desc;
-$$;
-grant execute on function login_counts() to authenticated;
-```
-
----
 
 ## Local Setup
 
